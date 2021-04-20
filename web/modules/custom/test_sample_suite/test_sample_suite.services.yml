@@ -1,0 +1,3 @@
+services:
+  test_sample_suite.test:
+    class: Drupal\test_sample_suite\TestService

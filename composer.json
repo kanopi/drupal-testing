@@ -31,7 +31,10 @@
         "drupal/drupal-extension": "^4.1",
         "genesis/behat-fail-aid": "^2.1",
         "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
+        "mglaman/phpstan-drupal": "^0.12.9",
         "mikey179/vfsstream": "^1.2",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^0.12.6",
         "phpunit/phpunit": "^6.5",
         "squizlabs/php_codesniffer": "^3.4.0",
         "symfony/css-selector": "^2.8",
@@ -59,6 +62,9 @@
             "./vendor/bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,css,info,txt,md --ignore=node_modules,bower_components,vendor ./web/themes/custom",
             "./vendor/bin/phpcs --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,css,info,txt,md --ignore=node_modules,bower_components,vendor ./web/modules/custom",
             "./vendor/bin/phpcs --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,css,info,txt,md --ignore=node_modules,bower_components,vendor ./web/themes/custom"
+        ],
+        "phpstan": [
+            "vendor/bin/phpstan analyse --memory-limit=-1 -l max web/modules/custom/"
         ],
         "unit-test": [
             "./vendor/bin/phpunit --group test_sample_suites --verbose"
