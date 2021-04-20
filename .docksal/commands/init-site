@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+
+#: exec_target = cli
+
+## Initialize/reinstall site
+##
+## Usage: fin init-site
+
+# Abort if anything fails
+set -e
+
+#-------------------------- Settings --------------------------------
+
+# PROJECT_ROOT and DOCROOT are set as env variables in cli
+SITE_DIRECTORY="default"
+DOCROOT_PATH="${PROJECT_ROOT}/${DOCROOT}"
+SITEDIR_PATH="${DOCROOT_PATH}/sites/${SITE_DIRECTORY}"
+
+#-------------------------- END: Settings --------------------------------
+
+#-------------------------- Helper functions --------------------------------
+
+# Copy a settings file.
+# Skips if the destination file already exists.
+# @param $1 source file
+# @param $2 destination file
+copy_settings_file()
+{
+	local source="$1"
+	local dest="$2"
+
+	if [[ ! -f $dest ]]; then
+		echo "Copying ${dest}..."
+		cp $source $dest
+	else
+		echo "${dest} already in place."
+	fi
+}
+
+#-------------------------- END: Helper functions --------------------------------
+
+#-------------------------- Functions --------------------------------
+# Fix file/folder permissions
+fix_permissions ()
+{
+	echo "Making site directory writable..."
+	chmod 755 "${SITEDIR_PATH}"
+}
+
+# Install site
+site_install ()
+{
+	cd $DOCROOT_PATH
+
+	# We disable email sending here so site-install does not return an error
+	PHP_OPTIONS="-d sendmail_path=`which true`" drush site-install -y --site-name='My Drupal 8 Site' --sites-subdir="default"
+}
+
+# Composer Install
+composer_install ()
+{
+  cd $PROJECT_ROOT
+  composer install
+}
+
+install_items ()
+{
+  composer_install
+  fix_permissions
+  site_install
+}
+
+#-------------------------- END: Functions --------------------------------
+
+#-------------------------- Execution --------------------------------
+
+echo "Create Test Directories..."
+mkdir ~/tmp || true
+mkdir -p ${PROJECT_ROOT}/${DOCROOT}/sites/dtt/html_output || true
+mkdir -p ${PROJECT_ROOT}/${DOCROOT}/sites/dtt/screenshots || true
+mkdir -p ${PROJECT_ROOT}/${DOCROOT}/sites/simpletest/browser_output || true
+
+install_items
+
+# Project initialization steps
+#-------------------------- END: Execution --------------------------------
