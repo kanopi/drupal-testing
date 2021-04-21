@@ -56,7 +56,7 @@ composer -n dtt-unit-test
 
 The following repo also has PHPStan configured to run.
 
-The configuration file to use as an example would be the `phpstan.new`.
+The configuration file to use as an example would be the `phpstan.neon`.
 
 ### Running The Command
 
